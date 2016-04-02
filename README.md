@@ -20,6 +20,8 @@ read.on('line', function (path, index, content) {
     // content => 匹配的内容
 });
 
+
+// todo待完成
 read.on('end', function (data) {
     data = [
         {
@@ -35,24 +37,5 @@ read.on('end', function (data) {
 });
 
 read.on('error', function (errcode, errmsg) {});
-```
-
-### .sync
-
-同步请求
-
-```js
-var data = fsGrep.sync(pattern, files);
-data = [
-    {
-        path: '',
-        data: [
-            {
-                index: '',
-                content: ''
-            }
-        ]
-    }
-];
 ```
 

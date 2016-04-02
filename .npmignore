@@ -1,0 +1,7 @@
+node_modules/
+/coverage/
+/.travis.yml
+/appveyor.yml
+/.fecsrc
+/test/
+/release.sh

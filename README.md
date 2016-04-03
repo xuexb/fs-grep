@@ -3,9 +3,8 @@ Contents of the file grep
 
 ## Cli
 
-todo待完成
 ```shell
-grep pattern files
+fs-grep <pattern> [files]
 ```
 
 ## Api

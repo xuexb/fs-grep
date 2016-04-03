@@ -18,6 +18,8 @@ class Grep {
      * @type {Object}
      */
     static options = {
+        encoding: 'utf8',
+        maxFileLength: null
     }
 
     /**
@@ -48,15 +50,44 @@ class Grep {
         let result = [];
 
         read.on('match', filepath => {
+            let temp = {
+                path: filepath,
+                data: []
+            };
             let rl = readLine(filepath, {
                 blankLine: false
             });
             rl.on('line', (line, index) => {
-                line = iconv.decode(line, 'gbk');
+                line = line.toString(options.encoding);
+                // line = iconv.decode(line, 'utf8');
                 if (line.indexOf(options.pattern) > -1) {
                     this._emit('line', filepath, index, line);
+
+                    temp.data.push({
+                        index,
+                        content: line
+                    });
                 }
             });
+
+            rl.on('end', () => {
+                if (temp.data.length) {
+                    result.push(temp);
+
+                    // 如果有查找文件最大数
+                    if (options.maxFileLength && result.length === options.maxFileLength) {
+                        read.abort();
+                    }
+                }
+            });
+        });
+
+        read.on('end', () => {
+            this._emit('end', result);
+        });
+
+        read.on('abort', () => {
+            this._emit('end', result);
         });
     }
 

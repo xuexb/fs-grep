@@ -22,7 +22,6 @@ read.on('line', function (path, index, content) {
 });
 
 
-// todo待完成
 read.on('end', function (data) {
     data = [
         {

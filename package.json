@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Contents of the file grep",
   "main": "lib/index.js",
+  "bin": "bin/fs-grep",
   "scripts": {
     "compile": "babel src/ -d lib/",
     "watch": "npm run compile -- --watch",
@@ -24,6 +25,8 @@
   "homepage": "https://github.com/xuexb/fs-grep#readme",
   "dependencies": {
     "babel-runtime": "6.x",
+    "colors": ">=1.1.2",
+    "commander": ">=2.9.0",
     "fs-readline": ">=1.1.1",
     "glob": ">=7.0.3",
     "iconv-lite": ">=0.4.13"

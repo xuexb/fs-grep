@@ -17,10 +17,24 @@ Contents of the file grep
 ## Cli
 
 ```shell
+# install
+[sudo] npm install -g fs-grep
+
 fs-grep <pattern> [files]
+
+# 例子:查找当前目录下的包含所有test的文件
+fs-grep test
+
+# 例子:查找所有.md
+fs-grep test "./**/*.md"
+
+# 例子:搜索词高亮
+fs-grep --color test
 ```
 
 ## Api
+
+使用`npm install fs-grep`安装
 
 ### .exec
 
@@ -48,6 +62,7 @@ read.on('end', function (data) {
     ];
 });
 
+// todo
 read.on('error', function (errcode, errmsg) {});
 ```
 

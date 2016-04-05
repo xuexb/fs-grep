@@ -57,5 +57,8 @@
       "transform-runtime",
       "add-module-exports"
     ]
+  },
+  "engines": {
+    "node": ">= 0.12.0"
   }
 }

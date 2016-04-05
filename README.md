@@ -20,6 +20,8 @@ Contents of the file grep
 # install
 [sudo] npm install -g fs-grep
 
+# pattern => 需要匹配的内容，如果有空格需要使用引号包裹
+# files => 以glob的方式，比如"./**/*"、"./**/*.ext"等
 fs-grep <pattern> [files]
 
 # 例子:查找当前目录下的包含所有test的文件

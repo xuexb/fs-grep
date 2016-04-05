@@ -11,7 +11,8 @@
     "start": "node start",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-register -t 5000 --recursive  -R spec test/",
     "test": "mocha --compilers js:babel-register --reporter spec --timeout 5000 --recursive test/",
-    "check": "fecs check src/ test/ --reporter=baidu"
+    "check": "fecs check src/ test/ --reporter=baidu",
+    "release": "bash release.sh"
   },
   "repository": {
     "type": "git",

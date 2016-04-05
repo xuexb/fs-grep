@@ -21,7 +21,10 @@
   "keywords": [
     "fs"
   ],
-  "author": "xiaowu",
+  "author": {
+    "name": "xiaowu",
+    "email": "fe.xiaowu@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/xuexb/fs-grep/issues"

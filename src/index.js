@@ -5,7 +5,7 @@
  */
 
 import readLine from 'fs-readline';
-import iconv from 'iconv-lite';
+// import iconv from 'iconv-lite';
 import glob from 'glob';
 import Event from 'events';
 
@@ -125,6 +125,14 @@ class Grep {
  * @return {Object}         实例对象
  */
 export function exec(pattern, files) {
+    if (typeof pattern === 'undefined') {
+        throw new Error('pattern is empty');
+    }
+
+    if ('string' !== typeof files) {
+        throw new Error('files is not string');
+    }
+
     return new Grep({
         pattern,
         files

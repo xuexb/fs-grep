@@ -27,7 +27,7 @@ class Grep {
      *
      * @param  {Object} options 配置参数
      */
-    constructor(options = {}) {
+    constructor(options) {
         this.options = {
             ...Grep.options, ...options
         };
@@ -47,19 +47,36 @@ class Grep {
         let read = glob(options.files, {
             nodir: true
         });
+
+        /**
+         * 匹配的结果
+         * @type {Array}
+         */
         let result = [];
 
+        /**
+         * 匹配到结果的文件个数，用来计算是否结束
+         * @type {Number}
+         */
+        let rseultLength = 0;
+
+        // 监听匹配事件
         read.on('match', filepath => {
             let temp = {
                 path: filepath,
                 data: []
             };
+
+            // 逐行读取
             let rl = readLine(filepath, {
                 blankLine: false
             });
+
+            // 匹配文件个数+1
+            rseultLength += 1;
+
             rl.on('line', (line, index) => {
                 line = line.toString(options.encoding);
-                // line = iconv.decode(line, 'utf8');
                 if (line.indexOf(options.pattern) > -1) {
                     this._emit('line', filepath, index, line);
 
@@ -70,24 +87,23 @@ class Grep {
                 }
             });
 
-            rl.on('end', () => {
+            rl.on('end', (line) => {
+                // 让匹配文件结果减少
+                rseultLength -= 1;
+
+                // 如果有匹配到内容，则追加到结果集中
                 if (temp.data.length) {
                     result.push(temp);
+                }
 
-                    // 如果有查找文件最大数
-                    if (options.maxFileLength && result.length === options.maxFileLength) {
-                        read.abort();
-                    }
+                if (rseultLength === 0) {
+                    this._emit('end', result);
                 }
             });
-        });
 
-        read.on('end', () => {
-            this._emit('end', result);
-        });
-
-        read.on('abort', () => {
-            this._emit('end', result);
+            rl.on('abort', () => {
+                this._emit('end', result);
+            });
         });
     }
 
@@ -125,7 +141,7 @@ class Grep {
  * @return {Object}         实例对象
  */
 export function exec(pattern, files) {
-    if (typeof pattern === 'undefined') {
+    if ("undefined" === typeof pattern) {
         throw new Error('pattern is empty');
     }
 

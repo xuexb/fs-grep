@@ -63,8 +63,5 @@ read.on('end', function (data) {
         }
     ];
 });
-
-// todo
-read.on('error', function (errcode, errmsg) {});
 ```
 

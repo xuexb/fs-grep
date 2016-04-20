@@ -17,7 +17,7 @@ let option = {};
 program
     .version(pkg.version)
     .arguments('<pattern> [files]')
-    .option('--color', '高亮')
+    .option('--color', '高亮搜索词')
     .action((pattern, files) => {
         option.pattern = pattern;
         option.files = files || './**/*';

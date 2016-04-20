@@ -54,17 +54,6 @@
     "mock-fs": ">=3.8.0",
     "should": ">=8.2.2"
   },
-  "babel": {
-    "presets": [
-      "es2015",
-      "stage-0",
-      "stage-3"
-    ],
-    "plugins": [
-      "transform-runtime",
-      "add-module-exports"
-    ]
-  },
   "engines": {
     "node": ">= 0.12.0"
   }

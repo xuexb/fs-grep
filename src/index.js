@@ -105,6 +105,12 @@ class Grep {
             //     this._emit('end', result);
             // });
         });
+
+        read.on('end', () => {
+            if (rseultLength === 0) {
+                this._emit('end', result);
+            }
+        });
     }
 
     /**
@@ -141,7 +147,7 @@ class Grep {
  * @return {Object}         实例对象
  */
 export function exec(pattern, files) {
-    if ('undefined' === typeof pattern) {
+    if ('string' !== typeof pattern || pattern === '') {
         throw new Error('pattern is empty');
     }
 

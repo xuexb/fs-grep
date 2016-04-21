@@ -5,7 +5,6 @@
  */
 
 import should from 'should';
-import {resolve, dirname} from 'path';
 import mock from 'mock-fs';
 
 import {exec} from '../src/index';
@@ -17,22 +16,31 @@ describe('fs-grep', () => {
         exec.should.be.type('function');
     });
 
-    it('exec()', () => {
+    it('exec() param check', () => {
         should.throws(() => {
             exec();
-            exec(false);
-            exec(true);
-            exec(true, null);
-            exec(true, '');
+        });
+
+        should.throws(() => {
             exec(false, false);
+        });
+
+        should.throws(() => {
+            exec('str');
+        });
+
+        exec('str', 'str');
+
+        should.throws(() => {
+            exec(undefined, 'str');
         });
     });
 
     it('exec(test, dir)', done => {
         mock({
-            "test/test.md": "test 测试 test",
-            "test/test2.md": "no",
-            "test/test3.md": "md"
+            'test/test.md': 'test 测试 test',
+            'test/test2.md': 'no',
+            'test/test3.md': 'md'
         });
 
         let read = exec('test', './test/**/*');

@@ -19,7 +19,7 @@ class Grep {
      */
     static options = {
         encoding: 'utf8',
-        maxFileLength: null
+        maxResultLength: null
     }
 
     /**
@@ -101,9 +101,9 @@ class Grep {
                 }
             });
 
-            rl.on('abort', () => {
-                this._emit('end', result);
-            });
+            // rl.on('abort', () => {
+            //     this._emit('end', result);
+            // });
         });
     }
 
@@ -125,7 +125,7 @@ class Grep {
      *
      * @private
      * @param  {string}    name 事件名称
-     * @param  {Object} args args
+     * @param  {...args} args args
      */
     _emit(name, ...args) {
         this._event.emit(name, ...args);
@@ -141,7 +141,7 @@ class Grep {
  * @return {Object}         实例对象
  */
 export function exec(pattern, files) {
-    if ("undefined" === typeof pattern) {
+    if ('undefined' === typeof pattern) {
         throw new Error('pattern is empty');
     }
 

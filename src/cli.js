@@ -34,7 +34,7 @@ let read = exec(option.pattern, option.files);
 read.on('line', (path, index, content) => {
     if (program.color) {
         console.log(path + ':' + index + ' => ', content.replace(new RegExp(option.pattern, 'g'), ($0) => {
-            return $0.red
+            return $0.red;
         }));
     }
     else {

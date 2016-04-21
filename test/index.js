@@ -34,6 +34,10 @@ describe('fs-grep', () => {
         should.throws(() => {
             exec(undefined, 'str');
         });
+
+        should.throws(() => {
+            exec('', 'str');
+        });
     });
 
     it('exec(test, dir)', done => {
@@ -50,7 +54,7 @@ describe('fs-grep', () => {
             num += 1;
         });
 
-        read.on('end', (data) => {
+        read.on('end', data => {
             num.should.be.equal(1);
 
             // 验证data=[]
@@ -70,6 +74,72 @@ describe('fs-grep', () => {
             data[0].data[0].index.should.be.equal(1);
             data[0].data[0].content.should.be.equal('test 测试 test');
 
+            done();
+        });
+    });
+
+    it('exec empty path', done => {
+        let read = exec('xieJifksljfds', './empty/**/*');
+        read.on('end', data => {
+            data.length.should.be.equal(0);
+            done();
+        });
+    });
+
+    it('exec not found', done => {
+        mock({
+            './empty/a.md': '',
+            './empty/b.md': ''
+        });
+
+        let read = exec('a', './empty/**/*');
+        read.on('end', data => {
+            data.length.should.be.equal(0);
+            done();
+        });
+    });
+
+    it('exec end result', done => {
+        mock({
+            './empty/a.md': ['1a', '', '2a', '3a'].join('\n')
+        });
+
+        let read = exec('a', './empty/**/*');
+        read.on('end', data => {
+            data.length.should.be.equal(1);
+            data[0].data.length.should.be.equal(3);
+            data[0].data[0].index.should.be.equal(1);
+            data[0].data[0].content.should.be.equal('1a');
+            data[0].data[1].index.should.be.equal(3);
+            data[0].data[1].content.should.be.equal('2a');
+            data[0].data[2].index.should.be.equal(4);
+            data[0].data[2].content.should.be.equal('3a');
+            done();
+        });
+    });
+
+    it('exec line', done => {
+        mock({
+            './empty/a.md': ['1a', '', '2a', '3a'].join('\n')
+        });
+
+        let read = exec('a', './empty/**/*');
+        let arr = [];
+        let filepath = null;
+
+        read.on('line', (path, index, content) => {
+            filepath = path;
+
+            arr.push({
+                // path,
+                index,
+                content
+            });
+        });
+
+        read.on('end', data => {
+            data[0].data.should.deepEqual(arr);
+            data[0].path.should.equal(filepath);
             done();
         });
     });

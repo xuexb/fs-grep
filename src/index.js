@@ -60,6 +60,15 @@ class Grep {
          */
         let rseultLength = 0;
 
+        let filter;
+
+        if ('string' === typeof options.pattern) {
+            filter = line => line.indexOf(options.pattern) > -1;
+        }
+        else {
+            filter = line => options.pattern.test(line);
+        }
+
         // 监听匹配事件
         read.on('match', filepath => {
             let temp = {
@@ -77,7 +86,7 @@ class Grep {
 
             rl.on('line', (line, index) => {
                 line = line.toString(options.encoding);
-                if (line.indexOf(options.pattern) > -1) {
+                if (filter(line)) {
                     this._emit('line', filepath, index, line);
 
                     temp.data.push({
@@ -85,9 +94,10 @@ class Grep {
                         content: line
                     });
                 }
+
             });
 
-            rl.on('end', (line) => {
+            rl.on('end', line => {
                 // 让匹配文件结果减少
                 rseultLength -= 1;
 
@@ -99,6 +109,7 @@ class Grep {
                 if (rseultLength === 0) {
                     this._emit('end', result);
                 }
+
             });
 
             // rl.on('abort', () => {
@@ -110,6 +121,7 @@ class Grep {
             if (rseultLength === 0) {
                 this._emit('end', result);
             }
+
         });
     }
 
@@ -147,8 +159,12 @@ class Grep {
  * @return {Object}         实例对象
  */
 export function exec(pattern, files) {
-    if ('string' !== typeof pattern || pattern === '') {
+    if (pattern === '') {
         throw new Error('pattern is empty');
+    }
+
+    if ('string' !== typeof pattern && !(pattern instanceof RegExp)) {
+        throw new Error('pattern is not string and RegExp');
     }
 
     if ('string' !== typeof files) {

@@ -78,6 +78,24 @@ describe('fs-grep', () => {
         });
     });
 
+    it('exec(reg, dir)', done => {
+        mock({
+            'test/test.md': 'xxno',
+            'test/test2.md': 'nox',
+            'test/test3.md': 'md'
+        });
+
+        let read = exec(/^no(.+?)/, './test/**/*');
+
+        read.on('end', data => {
+            data.length.should.equal(1);
+            data[0].data.length.should.equal(1);
+            data[0].data[0].index.should.equal(1);
+            data[0].data[0].content.should.equal('nox');
+            done();
+        });
+    });
+
     it('exec empty path', done => {
         let read = exec('xieJifksljfds', './empty/**/*');
         read.on('end', data => {

@@ -41,7 +41,8 @@ fs-grep --color test
 ### .exec
 
 ```js
-var read = fsGrep.exec(pattern, files);
+var grep = require('fs-grep');
+var read = grep.exec(pattern, files);
 
 read.on('line', function (path, index, content) {
     // path => 文件路径
